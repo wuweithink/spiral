@@ -1,8 +1,10 @@
+#include "spiral.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <math.h>
 #include <complex>
 #include <cmath>
+#include <iostream>
 
 
 /* S(x) for small x */
@@ -144,7 +146,7 @@ static void fresnel( double xxa, double *ssa, double *cca )
 
     x  = fabs( xxa );
     x2 = x * x;
-    
+
     if ( x2 < 2.5625 )
     {
         t = x2 * x2;
@@ -193,15 +195,14 @@ static void fresnel( double xxa, double *ssa, double *cca )
 * @param t      tangent direction at s [rad]
 */
 
-void odrSpiral( double s, double curv_start, double hdg, double gamma, double x_start, double y_start,
+void spiral( double s, double curv_start, double hdg, double gamma, double x_start, double y_start,
                 double *x_out, double *y_out, double *t_out)
 {
     std::complex<double> c0(x_start, y_start);
 
     double a;
 
-    a = 1.0 / sqrt( fabs( gamma ) );
-    a *= sqrt( M_PI );
+    a = sqrt(M_PI * fabs(gamma));
 
     double sa, ca;
     fresnel((curv_start + gamma * s) / a, &sa, &ca);
@@ -210,7 +211,7 @@ void odrSpiral( double s, double curv_start, double hdg, double gamma, double x_
     fresnel(curv_start / a, &sb, &cb);
 
     std::complex<double> mm(0, hdg - pow(curv_start, 2) / 2/ gamma);
-    auto cs1 = std::exp(mm);
+    auto cs1 = sqrt(M_PI / fabs(gamma)) * std::exp(mm);
     //Cs2 = np.sign(self._gamma) * (Ca - Cb) + 1j * Sa - 1j * Sb
     double nn;
     if (gamma > 0)
@@ -228,4 +229,5 @@ void odrSpiral( double s, double curv_start, double hdg, double gamma, double x_
     *t_out = gamma * pow(s, 2) / 2 + curv_start * s + hdg;
     *x_out = cs.real();
     *y_out = cs.imag();
+    std::cout << "x:" << *x_out << "  y:" << *y_out << std::endl;
 }

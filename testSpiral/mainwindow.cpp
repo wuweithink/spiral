@@ -29,10 +29,10 @@ void MainWindow::paintEvent(QPaintEvent *)
 
 void MainWindow::initSpiral()
 {
-    for (int i = 0; i < 300000; i+=10)
+    for (int i = 0; i < 60; i+=10)
     {
         double x, y, t;
-        odrSpiral(i, 0.0, 0.0, 0.01, 0.0, 0.0,
+        spiral(i, 0.0, 5.49, 0.0011, 2.0, 2.0,
                                     &x, &y, &t);
         Point pt;
         pt.x = x * 100;

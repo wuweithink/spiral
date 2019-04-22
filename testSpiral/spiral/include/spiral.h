@@ -7,5 +7,5 @@
 * @param t      tangent direction at s [rad]
 */
 
-extern void odrSpiral( double s, double curv_start, double hdg, double gamma, double x_start, double y_start,
+extern void spiral( double s, double curv_start, double hdg, double gamma, double x_start, double y_start,
                             double *x_out, double *y_out, double *t_out);
